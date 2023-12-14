@@ -1,6 +1,11 @@
+
+# Import libraries
 library(shiny)
 library(shinydashboard)
 library(bslib)
+
+# Import modules
+source("modules/metadataTable_module.R")
 
 # Define the UI
 ui <- dashboardPage(
@@ -20,7 +25,8 @@ ui <- dashboardPage(
   body = dashboardBody(
     theme = bslib::bs_theme(bootswatch = "lux"),
     tabItems(
-      tabItem(tabName = "metadata_table", verbatimTextOutput("metadataTable")),
+      tabItem(tabName = "metadata_table", metadataTableUI("metadataTable")),
+      #tabItem(tabName = "metadata_table", verbatimTextOutput("metadataTable")),
       tabItem(tabName = "pca_plots", plotOutput("pcaPlot")),
       tabItem(tabName = "correlation_matrices", plotOutput("corrMatrix")),
       tabItem(tabName = "volcano_plots", plotOutput("volcanoPlot")),
@@ -32,9 +38,8 @@ ui <- dashboardPage(
 
 # Define the server logic
 server <- function(input, output) {
-  # Here would go the server-side logic for each of your UI components
-  # For now, we just output placeholder text or empty plots
-  output$metadataTable <- renderPrint("Metadata Table goes here.")
+  metadataTableServer("metadataTable")
+  #output$metadataTable <- renderPrint("Metadata Table goes here.")
   output$pcaPlot <- renderPlot(plot.new(), height = 300, width = 600)
   output$corrMatrix <- renderPlot(plot.new(), height = 300, width = 600)
   output$volcanoPlot <- renderPlot(plot.new(), height = 300, width = 600)
